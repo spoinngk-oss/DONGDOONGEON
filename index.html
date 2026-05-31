@@ -1,0 +1,1421 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shook-shi</title>
+    <style>
+      @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+      :root {
+        --blue: #3654f4;
+        --blue-soft: #eef2ff;
+        --ink: #181818;
+        --paper: #fffdf8;
+        --salmon: #ff6f1a;
+        --green: #b5d96a;
+        --muted: #6f7481;
+        --line: rgba(24, 24, 24, 0.11);
+        --shadow: 0 24px 70px rgba(34, 45, 88, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        background: #f7f8fc;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.38;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .app-shell {
+        width: min(1120px, 100%);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: clamp(18px, 3.8vw, 48px);
+      }
+
+      .setup-view,
+      .result-view {
+        min-height: calc(100vh - clamp(36px, 7.6vw, 96px));
+        display: grid;
+        align-content: center;
+        gap: 24px;
+      }
+
+      .setup-view {
+        margin: calc(clamp(18px, 3.8vw, 48px) * -1);
+        padding: clamp(22px, 4vw, 52px);
+        min-height: 100vh;
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .result-view {
+        margin: calc(clamp(18px, 3.8vw, 48px) * -1);
+        padding: clamp(22px, 4vw, 52px);
+        min-height: 100vh;
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .hero-sushi {
+        position: relative;
+        width: min(100%, 760px);
+        min-height: clamp(520px, 86vh, 820px);
+        margin: 0 auto 2px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .hero-sushi::before {
+        content: "shook-shi";
+        position: absolute;
+        inset: -4px auto auto 16px;
+        color: rgba(255, 255, 255, 0.15);
+        font-size: clamp(64px, 14vw, 150px);
+        font-weight: 900;
+        line-height: 0.9;
+        white-space: nowrap;
+      }
+
+      .credit-copy {
+        position: relative;
+        z-index: 2;
+        width: min(100%, 660px);
+        min-height: 116vh;
+        margin: 0 auto;
+        padding: 52vh 0 28vh;
+        display: grid;
+        gap: 38vh;
+      }
+
+      .credit-copy p {
+        margin: 0;
+        color: #fff;
+        font-size: clamp(26px, 5.4vw, 58px);
+        font-weight: 850;
+        line-height: 1.16;
+        text-align: center;
+        text-wrap: balance;
+        text-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+      }
+
+      .sushi-rail {
+        position: absolute;
+        left: 50%;
+        bottom: 12%;
+        width: min(940px, 132%);
+        height: 104px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background:
+          repeating-linear-gradient(90deg, rgba(24, 24, 24, 0.18) 0 2px, transparent 2px 72px),
+          rgba(255, 255, 255, 0.23);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+      }
+
+      .sushi-rail::before,
+      .sushi-rail::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.34);
+      }
+
+      .sushi-rail::before {
+        top: 18px;
+      }
+
+      .sushi-rail::after {
+        bottom: 18px;
+      }
+
+      .sushi-track {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        gap: 46px;
+        width: max-content;
+        animation: conveyorMove 18s linear infinite;
+      }
+
+      @keyframes conveyorMove {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .mini-sushi {
+        position: relative;
+        flex: 0 0 auto;
+        width: 170px;
+        height: 126px;
+      }
+
+      .mini-sushi::before {
+        content: "";
+        position: absolute;
+        left: 28px;
+        bottom: 0;
+        width: 112px;
+        height: 78px;
+        border-radius: 46% 46% 42% 42%;
+        background: #fff;
+        box-shadow: inset 0 -8px 0 rgba(24, 24, 24, 0.08);
+      }
+
+      .mini-sushi::after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 10px;
+        width: 154px;
+        height: 54px;
+        border-radius: 48px 48px 20px 20px;
+        background:
+          linear-gradient(126deg, transparent 0 22%, #fff 23% 28%, transparent 29% 48%, #fff 49% 54%, transparent 55%),
+          var(--salmon);
+      }
+
+      .sushi-a {
+        transform: rotate(-7deg) scale(0.8);
+      }
+
+      .sushi-b {
+        transform: scale(0.92);
+      }
+
+      .sushi-c {
+        transform: rotate(8deg) scale(0.84);
+      }
+
+      .brand-area,
+      .todo-form,
+      .todo-list,
+      .setup-actions {
+        width: min(100%, 760px);
+        margin: 0 auto;
+      }
+
+      .setup-view .brand-area,
+      .setup-view .todo-form,
+      .setup-view .todo-list,
+      .setup-view .setup-actions {
+        position: relative;
+        z-index: 3;
+      }
+
+      .kicker {
+        margin: 0 0 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .setup-view .kicker,
+      .result-view .kicker {
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      .result-view > .kicker,
+      .result-view > h2 {
+        width: min(100%, 760px);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        letter-spacing: 0;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(28px, 5vw, 52px);
+        line-height: 1;
+        font-weight: 850;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(24px, 4vw, 42px);
+        line-height: 1.08;
+        font-weight: 820;
+      }
+
+      h3 {
+        margin: 0 0 14px;
+        font-size: 17px;
+      }
+
+      .todo-form label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .setup-view .todo-form label {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+      }
+
+      .input-row input {
+        min-width: 0;
+        height: 52px;
+        padding: 0 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        outline: none;
+        box-shadow: 0 12px 34px rgba(31, 42, 80, 0.06);
+      }
+
+      .input-row input:focus {
+        border-color: rgba(54, 84, 244, 0.55);
+      }
+
+      .input-row button,
+      .primary-button,
+      .ghost-button,
+      .game-controls button {
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 8px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 750;
+        transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
+      }
+
+      .input-row button:hover,
+      .primary-button:hover,
+      .ghost-button:hover,
+      .game-controls button:hover {
+        transform: translateY(-1px);
+      }
+
+      .todo-list {
+        display: grid;
+        gap: 8px;
+        min-height: 48px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .todo-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-height: 46px;
+        padding: 10px 12px 10px 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.86);
+      }
+
+      .todo-list span {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        font-weight: 650;
+      }
+
+      .todo-list button {
+        width: 30px;
+        height: 30px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: #f0f2f7;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .setup-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .setup-actions p,
+      .motion-status {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .setup-view .setup-actions p {
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      .game-view {
+        min-height: calc(100vh - clamp(36px, 7.6vw, 96px));
+        display: grid;
+        grid-template-rows: auto 1fr auto auto;
+        gap: 14px;
+      }
+
+      .game-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .game-header h2 {
+        font-size: 22px;
+      }
+
+      .game-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .ghost-button {
+        min-height: 38px;
+        padding: 0 14px;
+        background: #fff;
+        color: var(--ink);
+        box-shadow: 0 10px 26px rgba(31, 42, 80, 0.08);
+      }
+
+      .play-area {
+        position: relative;
+        min-height: 560px;
+        overflow: hidden;
+        border-radius: 8px;
+        background:
+          linear-gradient(180deg, #f8f4ec 0%, #fffdf8 48%, #f1f4ff 100%);
+        box-shadow: var(--shadow);
+        perspective: 900px;
+      }
+
+      .depth-line {
+        position: absolute;
+        left: 50%;
+        width: 140%;
+        height: 1px;
+        background: rgba(24, 24, 24, 0.07);
+        transform: translateX(-50%);
+      }
+
+      .depth-one {
+        top: 26%;
+      }
+
+      .depth-two {
+        top: 46%;
+      }
+
+      .depth-three {
+        top: 68%;
+      }
+
+      .sushi-card {
+        --from-x: -42vw;
+        --from-y: 12px;
+        --to-x: 28vw;
+        --to-y: 58vh;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: min(76vw, 270px);
+        display: grid;
+        justify-items: center;
+        gap: 8px;
+        opacity: 0;
+        transform: translate(var(--from-x), var(--from-y)) scale(0.2) rotate(var(--tilt, -8deg));
+        will-change: transform, opacity;
+        pointer-events: none;
+      }
+
+      .sushi-card.flying {
+        animation: flyDiagonal 2200ms cubic-bezier(0.14, 0.78, 0.28, 1) forwards;
+      }
+
+      .sushi-card.eaten {
+        animation: sushiVanish 360ms ease forwards;
+      }
+
+      @keyframes flyDiagonal {
+        0% {
+          opacity: 0;
+          transform: translate(var(--from-x), var(--from-y)) scale(0.18) rotate(var(--tilt));
+        }
+
+        14% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 1;
+          transform: translate(var(--to-x), var(--to-y)) scale(1.34) rotate(calc(var(--tilt) * -0.6));
+        }
+      }
+
+      @keyframes sushiVanish {
+        to {
+          opacity: 0;
+          transform: translate(var(--hit-x, 0), 54vh) scale(0.64) rotate(0deg);
+        }
+      }
+
+      .sushi-card p {
+        max-width: 100%;
+        margin: 0;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.88);
+        color: var(--ink);
+        text-align: center;
+        font-size: 15px;
+        font-weight: 750;
+        overflow-wrap: anywhere;
+        box-shadow: 0 10px 24px rgba(31, 42, 80, 0.08);
+      }
+
+      .sushi-illustration {
+        position: relative;
+        width: 210px;
+        height: 128px;
+      }
+
+      .rice {
+        position: absolute;
+        left: 38px;
+        bottom: 0;
+        width: 136px;
+        height: 82px;
+        border-radius: 44% 44% 40% 40%;
+        background: #fff;
+        box-shadow: inset 0 -8px 0 rgba(24, 24, 24, 0.08);
+      }
+
+      .neta {
+        position: absolute;
+        left: 16px;
+        top: 6px;
+        width: 178px;
+        height: 62px;
+        border-radius: 46px 46px 18px 18px;
+        background:
+          linear-gradient(128deg, transparent 0 18%, #fff 19% 24%, transparent 25% 45%, #fff 46% 51%, transparent 52% 73%, #fff 74% 79%, transparent 80%),
+          var(--salmon);
+        box-shadow: 0 9px 0 rgba(153, 57, 8, 0.1);
+      }
+
+      .neta span {
+        display: none;
+      }
+
+      .heart-pop {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        z-index: 4;
+        font-size: 84px;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.7);
+        pointer-events: none;
+      }
+
+      .heart-pop.active {
+        animation: heartFloat 760ms ease forwards;
+      }
+
+      @keyframes heartFloat {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -32%) scale(0.6);
+        }
+
+        24% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -105%) scale(1.1);
+        }
+      }
+
+      .countdown-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 253, 248, 0.54);
+        backdrop-filter: blur(2px);
+        color: var(--ink);
+        font-size: clamp(74px, 16vw, 150px);
+        font-weight: 850;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+
+      .countdown-overlay.active {
+        opacity: 1;
+      }
+
+      .player {
+        --player-x: 0px;
+        position: absolute;
+        left: 50%;
+        bottom: -4px;
+        z-index: 3;
+        width: 190px;
+        height: 220px;
+        transform: translateX(calc(-50% + var(--player-x)));
+        transition: transform 120ms ease-out;
+      }
+
+      .head {
+        position: absolute;
+        left: 50%;
+        top: 30px;
+        width: 88px;
+        height: 96px;
+        transform: translateX(-50%);
+        border-radius: 44px 44px 38px 38px;
+        background: #f3d0b4;
+        box-shadow: inset 0 -9px 0 rgba(126, 75, 50, 0.08);
+      }
+
+      .hair {
+        position: absolute;
+        left: 50%;
+        top: 20px;
+        width: 92px;
+        height: 42px;
+        transform: translateX(-50%);
+        border-radius: 44px 44px 22px 22px;
+        background: #2b211f;
+      }
+
+      .neck {
+        position: absolute;
+        left: 50%;
+        top: 116px;
+        width: 34px;
+        height: 36px;
+        transform: translateX(-50%);
+        border-radius: 14px;
+        background: #f3d0b4;
+      }
+
+      .body {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 178px;
+        height: 88px;
+        transform: translateX(-50%);
+        border-radius: 58px 58px 0 0;
+        background: #e9edf8;
+        box-shadow: inset 0 12px 0 rgba(255, 255, 255, 0.56);
+      }
+
+      .camera-strip {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        display: none;
+        width: 112px;
+        height: 84px;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #e7eaf4;
+        opacity: 0.72;
+      }
+
+      .camera-strip.active {
+        display: block;
+      }
+
+      .camera-strip video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scaleX(-1);
+      }
+
+      .game-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 10px;
+      }
+
+      .game-controls button {
+        background: #fff;
+        color: var(--ink);
+        box-shadow: 0 10px 26px rgba(31, 42, 80, 0.08);
+      }
+
+      #eatButton {
+        background: var(--green);
+      }
+
+      #dodgeButton {
+        background: var(--blue);
+        color: #fff;
+      }
+
+      #motionButton.active {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .result-panel {
+        width: min(100%, 760px);
+        margin: 0 auto;
+        display: grid;
+        gap: 18px;
+        padding: 22px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--ink);
+        box-shadow: 0 24px 70px rgba(10, 18, 66, 0.26);
+      }
+
+      .result-rail {
+        position: relative;
+        width: min(100%, 760px);
+        height: 150px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .result-rail .sushi-rail {
+        bottom: 20px;
+      }
+
+      .ending-badge {
+        min-height: 96px;
+        display: grid;
+        place-items: center;
+        padding: 16px;
+        border-radius: 8px;
+        background: var(--blue);
+        color: #fff;
+        text-align: center;
+        font-size: clamp(32px, 7vw, 78px);
+        font-weight: 900;
+        line-height: 1;
+        animation: flashBadge 820ms steps(2, jump-none) infinite;
+      }
+
+      @keyframes flashBadge {
+        0%,
+        100% {
+          background: var(--blue);
+          color: #fff;
+          transform: scale(1);
+        }
+
+        50% {
+          background: var(--salmon);
+          color: var(--ink);
+          transform: scale(1.025);
+        }
+      }
+
+      .rank-list,
+      .plain-list {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      .rank-list li,
+      .plain-list li {
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: var(--blue-soft);
+        font-weight: 680;
+        overflow-wrap: anywhere;
+      }
+
+      @media (max-width: 760px) {
+        .app-shell {
+          padding: 14px;
+        }
+
+        .setup-view,
+        .game-view,
+        .result-view {
+          min-height: calc(100vh - 28px);
+        }
+
+        .hero-sushi {
+          min-height: 620px;
+        }
+
+        .credit-copy {
+          min-height: 132vh;
+          padding-top: 48vh;
+          gap: 34vh;
+        }
+
+        .mini-sushi {
+          width: 142px;
+          height: 108px;
+        }
+
+        .input-row,
+        .game-controls {
+          grid-template-columns: 1fr;
+        }
+
+        .play-area {
+          min-height: 540px;
+        }
+
+        .player {
+          width: 160px;
+          height: 196px;
+        }
+
+        .camera-strip {
+          width: 86px;
+          height: 64px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="setup-view" id="setupView" aria-labelledby="appTitle">
+        <div class="hero-sushi" aria-hidden="true">
+          <div class="credit-copy">
+            <p>'SHOOK-SHI'&#45716; &#54924;&#54588;&#54616;&#44256;&#49910;&#51008; &#49692;&#49436;&#45824;&#47196; &#53804;&#46160;&#47532;&#49828;&#53944;&#47484; &#44396;&#49457;&#54644;&#51452;&#45716; &#44172;&#51076;&#51077;&#45768;&#45796;.</p>
+            <p>&#54924;&#54588;&#54616;&#44256;&#49910;&#51008; &#53804;&#46160;&#47484; &#47800;&#51004;&#47196; &#54588;&#54644;&#48372;&#49464;&#50836;.</p>
+            <p>&#54616;&#44256;&#49910;&#51008; &#51068;&#51008; &#51077;&#51012; &#48268;&#47140; &#47673;&#44256;,</p>
+            <p>&#54588;&#54616;&#51648;&#47803;&#54616;&#44256; &#47673;&#44592;&#46020; &#49899;&#51008; &#49828;&#49884;&#45716;.. &#47582;&#51004;&#47732;&#49436; &#51600;&#44592;&#49901;&#49884;&#50724;.</p>
+          </div>
+          <div class="sushi-rail">
+            <div class="sushi-track">
+              <div class="mini-sushi sushi-a"></div>
+              <div class="mini-sushi sushi-b"></div>
+              <div class="mini-sushi sushi-c"></div>
+              <div class="mini-sushi sushi-a"></div>
+              <div class="mini-sushi sushi-b"></div>
+              <div class="mini-sushi sushi-c"></div>
+              <div class="mini-sushi sushi-a"></div>
+              <div class="mini-sushi sushi-b"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="brand-area">
+          <p class="kicker">motion todo sushi bar</p>
+          <h1 id="appTitle">shook-shi</h1>
+        </div>
+
+        <form class="todo-form" id="todoForm">
+          <label for="todoInput">&#50724;&#45720;&#51032; &#53804;&#46160;</label>
+          <div class="input-row">
+            <input
+              id="todoInput"
+              type="text"
+              maxlength="32"
+              autocomplete="off"
+              placeholder="&#54624; &#51068;&#51012; &#54616;&#45208;&#50473; &#51201;&#50612;&#51452;&#49464;&#50836;"
+            />
+            <button type="submit">&#52628;&#44032;</button>
+          </div>
+        </form>
+
+        <ul class="todo-list" id="todoList" aria-live="polite"></ul>
+
+        <div class="setup-actions">
+          <button class="primary-button" id="startButton" type="button" disabled>
+            &#49884;&#51089;
+          </button>
+          <p id="startHint">&#53804;&#46160; 2&#44060;&#44032; &#54596;&#50836;&#54644;&#50836;.</p>
+        </div>
+      </section>
+
+      <section class="game-view hidden" id="gameView" aria-label="shook-shi game">
+        <header class="game-header">
+          <h2>shook-shi</h2>
+          <div class="game-meta">
+            <span id="roundCount">0 / 0</span>
+            <button class="ghost-button" id="resetButton" type="button">&#52376;&#51020;</button>
+          </div>
+        </header>
+
+        <div class="play-area" id="playArea">
+          <div class="depth-line depth-one"></div>
+          <div class="depth-line depth-two"></div>
+          <div class="depth-line depth-three"></div>
+
+          <div class="heart-pop" id="heartPop" aria-hidden="true">&#128151;</div>
+          <div class="countdown-overlay hidden" id="countdownOverlay" aria-live="polite">3</div>
+
+          <div class="sushi-card" id="sushiCard">
+            <div class="sushi-illustration" aria-hidden="true">
+              <div class="rice"></div>
+              <div class="neta">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <p id="flyingTodo">&#53804;&#46160;</p>
+          </div>
+
+          <div class="player" id="player" aria-label="user character">
+            <div class="head"></div>
+            <div class="hair"></div>
+            <div class="neck"></div>
+            <div class="body"></div>
+          </div>
+
+          <div class="camera-strip" id="cameraStrip" aria-hidden="true">
+            <video id="motionVideo" autoplay muted playsinline></video>
+          </div>
+        </div>
+
+        <div class="game-controls" aria-label="controls">
+          <button id="dodgeButton" type="button">&#54588;&#54616;&#44592;</button>
+          <button id="eatButton" type="button">&#47673;&#44592;</button>
+          <button id="motionButton" type="button">&#47784;&#49496; &#53076;&#44592;</button>
+        </div>
+        <p class="motion-status" id="motionStatus">&#47784;&#49496; &#45824;&#44592; &#51473;</p>
+      </section>
+
+      <section class="result-view hidden" id="resultView" aria-labelledby="resultTitle">
+        <p class="kicker">priority by avoidance</p>
+        <h2 id="resultTitle">&#45236;&#51068;&#51032; &#53804;&#46160; &#47532;&#49828;&#53944;</h2>
+        <div class="result-rail" aria-hidden="true">
+          <div class="sushi-rail">
+            <div class="sushi-track">
+              <div class="mini-sushi sushi-c"></div>
+              <div class="mini-sushi sushi-a"></div>
+              <div class="mini-sushi sushi-b"></div>
+              <div class="mini-sushi sushi-c"></div>
+              <div class="mini-sushi sushi-a"></div>
+              <div class="mini-sushi sushi-b"></div>
+              <div class="mini-sushi sushi-c"></div>
+              <div class="mini-sushi sushi-a"></div>
+            </div>
+          </div>
+        </div>
+        <div class="result-panel">
+          <div class="ending-badge" id="endingBadge" aria-live="polite"></div>
+          <article>
+            <h3>&#45236;&#51068;&#51032; &#53804;&#46160; &#49692;&#49436;</h3>
+            <ol id="priorityList" class="rank-list"></ol>
+          </article>
+        </div>
+        <button class="primary-button" id="againButton" type="button">&#45796;&#49884;</button>
+      </section>
+    </main>
+
+    <script type="module">
+      import {
+        FaceLandmarker,
+        FilesetResolver,
+      } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/vision_bundle.mjs";
+
+      const text = {
+        deleteLabel: "\uC0AD\uC81C",
+        ready: "\uAC1C\uC758 \uC2A4\uC2DC\uAC00 \uC900\uBE44\uB410\uC5B4\uC694.",
+        needTwo: "\uD22C\uB450 2\uAC1C\uAC00 \uD544\uC694\uD574\uC694.",
+        noDodged: "\uD53C\uD55C \uD22C\uB450\uAC00 \uC5C6\uC5B4\uC694.",
+        noEaten: "\uBA39\uC740 \uD22C\uB450\uAC00 \uC5C6\uC5B4\uC694.",
+        noMissed: "\uD53C\uD558\uC9C0 \uBABB\uD55C \uD22C\uB450\uAC00 \uC5C6\uC5B4\uC694.",
+        dodgeMaster: "\uD68C\uD53C \uC7A5\uC778\uC774\uC2DC\uB124\uC694!",
+        painEnjoyer: "\uACE0\uD1B5\uC744 \uC990\uAE30\uB294 \uC774\uC0C1\uD55C\uC0AC\uB78C!",
+        eatingChamp: "\uBA39\uC9F1\uC774\uC2DC\uB124\uC694!",
+        loadingModel: "\uBAA8\uC158 \uBAA8\uB378 \uBD88\uB7EC\uC624\uB294 \uC911",
+        noCamera: "\uCE74\uBA54\uB77C\uB97C \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC5B4\uC694",
+        motionOn: "\uACE0\uAC1C \uC88C\uC6B0 / \uC785 \uBC8C\uB9AC\uAE30",
+        motionOffButton: "\uBAA8\uC158 \uB044\uAE30",
+        motionOnButton: "\uBAA8\uC158 \uCF1C\uAE30",
+        motionFail: "\uBAA8\uC158 \uC5F0\uACB0 \uC2E4\uD328",
+        countdownReady: "\uC2A4\uC2DC \uB300\uAE30 \uC911",
+      };
+
+      const todoForm = document.querySelector("#todoForm");
+      const todoInput = document.querySelector("#todoInput");
+      const todoList = document.querySelector("#todoList");
+      const startButton = document.querySelector("#startButton");
+      const startHint = document.querySelector("#startHint");
+      const setupView = document.querySelector("#setupView");
+      const gameView = document.querySelector("#gameView");
+      const resultView = document.querySelector("#resultView");
+      const roundCount = document.querySelector("#roundCount");
+      const flyingTodo = document.querySelector("#flyingTodo");
+      const sushiCard = document.querySelector("#sushiCard");
+      const player = document.querySelector("#player");
+      const heartPop = document.querySelector("#heartPop");
+      const countdownOverlay = document.querySelector("#countdownOverlay");
+      const eatButton = document.querySelector("#eatButton");
+      const dodgeButton = document.querySelector("#dodgeButton");
+      const motionButton = document.querySelector("#motionButton");
+      const motionStatus = document.querySelector("#motionStatus");
+      const resetButton = document.querySelector("#resetButton");
+      const againButton = document.querySelector("#againButton");
+      const endingBadge = document.querySelector("#endingBadge");
+      const priorityList = document.querySelector("#priorityList");
+      const cameraStrip = document.querySelector("#cameraStrip");
+      const motionVideo = document.querySelector("#motionVideo");
+
+      let todos = [];
+      let currentIndex = 0;
+      let dodged = [];
+      let missed = [];
+      let eaten = [];
+      let acceptingChoice = false;
+      let currentDirection = "left-to-right";
+      let roundTimer = null;
+      let countdownTimer = null;
+
+      let faceLandmarker = null;
+      let motionStream = null;
+      let motionFrame = null;
+      let motionStartPromise = null;
+      let lastVideoTime = -1;
+      let lastMotionChoiceAt = 0;
+      let headSide = "center";
+
+      const sideToOffset = {
+        left: "-120px",
+        center: "0px",
+        right: "120px",
+      };
+
+      function init() {
+        renderTodos();
+      }
+
+      function renderTodos() {
+        todoList.innerHTML = "";
+
+        todos.forEach((todo, index) => {
+          const item = document.createElement("li");
+          const label = document.createElement("span");
+          const removeButton = document.createElement("button");
+
+          label.textContent = todo;
+          removeButton.type = "button";
+          removeButton.textContent = "\u00D7";
+          removeButton.setAttribute("aria-label", `${todo} ${text.deleteLabel}`);
+          removeButton.addEventListener("click", () => {
+            todos.splice(index, 1);
+            renderTodos();
+          });
+
+          item.append(label, removeButton);
+          todoList.append(item);
+        });
+
+        const canStart = todos.length >= 2;
+        startButton.disabled = !canStart;
+        startHint.textContent = canStart ? `${todos.length}${text.ready}` : text.needTwo;
+      }
+
+      function addTodo(todo) {
+        const cleanTodo = todo.trim();
+        if (!cleanTodo) return;
+        todos.push(cleanTodo);
+        todoInput.value = "";
+        renderTodos();
+      }
+
+      async function startGame() {
+        currentIndex = 0;
+        dodged = [];
+        missed = [];
+        eaten = [];
+        acceptingChoice = false;
+        clearTimeout(roundTimer);
+        clearTimeout(countdownTimer);
+        setupView.classList.add("hidden");
+        resultView.classList.add("hidden");
+        gameView.classList.remove("hidden");
+        roundCount.textContent = `0 / ${todos.length}`;
+        motionStatus.textContent = text.loadingModel;
+        await startMotion();
+        startCountdown();
+      }
+
+      function startCountdown() {
+        let count = 3;
+        countdownOverlay.textContent = count;
+        countdownOverlay.classList.remove("hidden");
+        countdownOverlay.classList.add("active");
+        sushiCard.classList.remove("flying", "eaten");
+        sushiCard.style.opacity = "0";
+
+        const tick = () => {
+          count -= 1;
+
+          if (count > 0) {
+            countdownOverlay.textContent = count;
+            countdownTimer = window.setTimeout(tick, 1000);
+            return;
+          }
+
+          countdownOverlay.textContent = "GO";
+          countdownTimer = window.setTimeout(() => {
+            countdownOverlay.classList.remove("active");
+            countdownOverlay.classList.add("hidden");
+            sushiCard.style.opacity = "";
+            showRound();
+          }, 650);
+        };
+
+        countdownTimer = window.setTimeout(tick, 1000);
+      }
+
+      function showRound() {
+        clearTimeout(roundTimer);
+
+        if (currentIndex >= todos.length) {
+          showResult();
+          return;
+        }
+
+        acceptingChoice = true;
+        currentDirection = currentIndex % 2 === 0 ? "right-to-left" : "left-to-right";
+
+        const fromRight = currentDirection === "right-to-left";
+        const todo = todos[currentIndex];
+
+        flyingTodo.textContent = todo;
+        roundCount.textContent = `${currentIndex + 1} / ${todos.length}`;
+        sushiCard.classList.remove("flying", "eaten");
+        sushiCard.style.setProperty("--from-x", fromRight ? "42vw" : "-42vw");
+        sushiCard.style.setProperty("--from-y", fromRight ? "4vh" : "10vh");
+        sushiCard.style.setProperty("--to-x", fromRight ? "-30vw" : "30vw");
+        sushiCard.style.setProperty("--to-y", "55vh");
+        sushiCard.style.setProperty("--tilt", fromRight ? "8deg" : "-8deg");
+        sushiCard.style.setProperty("--hit-x", fromRight ? "-28vw" : "28vw");
+
+        requestAnimationFrame(() => {
+          sushiCard.classList.add("flying");
+        });
+
+        roundTimer = window.setTimeout(() => {
+          if (acceptingChoice) {
+            missed.push(todo);
+            finishRound();
+          }
+        }, 2300);
+      }
+
+      function chooseTodo(choice) {
+        if (!acceptingChoice) return;
+
+        const todo = todos[currentIndex];
+        acceptingChoice = false;
+        clearTimeout(roundTimer);
+
+        if (choice === "eat") {
+          eaten.push(todo);
+          showHeart();
+          sushiCard.classList.add("eaten");
+        } else {
+          dodged.push(todo);
+          sushiCard.classList.remove("flying");
+          sushiCard.style.opacity = "0";
+        }
+
+        window.setTimeout(finishRound, choice === "eat" ? 520 : 340);
+      }
+
+      function finishRound() {
+        sushiCard.classList.remove("flying", "eaten");
+        sushiCard.style.opacity = "";
+        currentIndex += 1;
+        showRound();
+      }
+
+      function showHeart() {
+        heartPop.classList.remove("active");
+        requestAnimationFrame(() => {
+          heartPop.classList.add("active");
+        });
+      }
+
+      function expectedDodgeSide() {
+        return currentDirection === "right-to-left" ? "right" : "left";
+      }
+
+      function showResult() {
+        stopMotion();
+        clearTimeout(roundTimer);
+        clearTimeout(countdownTimer);
+        gameView.classList.add("hidden");
+        resultView.classList.remove("hidden");
+        priorityList.innerHTML = "";
+        endingBadge.textContent = getEndingMessage();
+
+        const priorityItems = [...dodged, ...missed, ...eaten];
+
+        priorityItems.forEach((todo) => {
+          const item = document.createElement("li");
+          item.textContent = todo;
+          priorityList.append(item);
+        });
+
+        if (!priorityItems.length) {
+          const item = document.createElement("li");
+          item.textContent = text.noDodged;
+          priorityList.append(item);
+        }
+      }
+
+      function getEndingMessage() {
+        const scores = [
+          { label: text.dodgeMaster, count: dodged.length },
+          { label: text.painEnjoyer, count: missed.length },
+          { label: text.eatingChamp, count: eaten.length },
+        ];
+
+        scores.sort((a, b) => b.count - a.count);
+        return scores[0].label;
+      }
+
+      function resetToSetup() {
+        stopMotion();
+        clearTimeout(roundTimer);
+        clearTimeout(countdownTimer);
+        countdownOverlay.classList.remove("active");
+        countdownOverlay.classList.add("hidden");
+        gameView.classList.add("hidden");
+        resultView.classList.add("hidden");
+        setupView.classList.remove("hidden");
+        renderTodos();
+      }
+
+      async function loadFaceLandmarker() {
+        if (faceLandmarker) return faceLandmarker;
+
+        motionStatus.textContent = text.loadingModel;
+        const filesetResolver = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm",
+        );
+
+        const options = {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task",
+            delegate: "GPU",
+          },
+          runningMode: "VIDEO",
+          numFaces: 1,
+        };
+
+        try {
+          faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, options);
+        } catch {
+          options.baseOptions.delegate = "CPU";
+          faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, options);
+        }
+
+        return faceLandmarker;
+      }
+
+      async function startMotion() {
+        if (motionStream) return true;
+        if (motionStartPromise) return motionStartPromise;
+
+        if (!navigator.mediaDevices?.getUserMedia) {
+          motionStatus.textContent = text.noCamera;
+          return false;
+        }
+
+        motionStartPromise = (async () => {
+          try {
+          await loadFaceLandmarker();
+          motionStream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480, facingMode: "user" },
+            audio: false,
+          });
+          motionVideo.srcObject = motionStream;
+          await motionVideo.play();
+          cameraStrip.classList.add("active");
+          motionButton.classList.add("active");
+          motionButton.textContent = text.motionOffButton;
+          motionStatus.textContent = text.motionOn;
+          scanFace();
+            return true;
+          } catch {
+            motionStatus.textContent = text.motionFail;
+            stopMotion();
+            return false;
+          } finally {
+            motionStartPromise = null;
+          }
+        })();
+
+        return motionStartPromise;
+      }
+
+      function stopMotion() {
+        if (motionFrame) {
+          cancelAnimationFrame(motionFrame);
+          motionFrame = null;
+        }
+
+        motionStartPromise = null;
+
+        if (motionStream) {
+          motionStream.getTracks().forEach((track) => track.stop());
+          motionStream = null;
+        }
+
+        motionVideo.srcObject = null;
+        cameraStrip.classList.remove("active");
+        motionButton.classList.remove("active");
+        motionButton.textContent = text.motionOnButton;
+        headSide = "center";
+        player.style.setProperty("--player-x", sideToOffset.center);
+      }
+
+      function scanFace() {
+        if (!faceLandmarker || !motionStream) return;
+
+        const videoTime = motionVideo.currentTime;
+
+        if (videoTime !== lastVideoTime) {
+          lastVideoTime = videoTime;
+          const result = faceLandmarker.detectForVideo(motionVideo, performance.now());
+          const face = result.faceLandmarks?.[0];
+
+          if (face) {
+            updateFromFace(face);
+          }
+        }
+
+        motionFrame = requestAnimationFrame(scanFace);
+      }
+
+      function updateFromFace(face) {
+        const nose = face[1];
+        const leftCheek = face[234];
+        const rightCheek = face[454];
+        const upperLip = face[13];
+        const lowerLip = face[14];
+        const forehead = face[10];
+        const chin = face[152];
+
+        const faceCenter = (leftCheek.x + rightCheek.x) / 2;
+        const yaw = nose.x - faceCenter;
+        const faceHeight = Math.max(0.01, Math.abs(chin.y - forehead.y));
+        const mouthOpen = Math.abs(lowerLip.y - upperLip.y) / faceHeight;
+
+        if (yaw < -0.028) {
+          headSide = "right";
+        } else if (yaw > 0.028) {
+          headSide = "left";
+        } else {
+          headSide = "center";
+        }
+
+        player.style.setProperty("--player-x", sideToOffset[headSide]);
+
+        const now = Date.now();
+        if (!acceptingChoice || now - lastMotionChoiceAt < 850) return;
+
+        if (mouthOpen > 0.07) {
+          lastMotionChoiceAt = now;
+          chooseTodo("eat");
+          return;
+        }
+
+        if (headSide === expectedDodgeSide()) {
+          lastMotionChoiceAt = now;
+          chooseTodo("dodge");
+        }
+      }
+
+      todoForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        addTodo(todoInput.value);
+      });
+
+      startButton.addEventListener("click", startGame);
+      eatButton.addEventListener("click", () => chooseTodo("eat"));
+      dodgeButton.addEventListener("click", () => chooseTodo("dodge"));
+      resetButton.addEventListener("click", resetToSetup);
+      againButton.addEventListener("click", resetToSetup);
+      motionButton.addEventListener("click", () => {
+        if (motionStream) {
+          stopMotion();
+        } else {
+          startMotion();
+        }
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (gameView.classList.contains("hidden")) return;
+        if (event.key === "ArrowLeft") {
+          player.style.setProperty("--player-x", sideToOffset.left);
+          if (expectedDodgeSide() === "left") chooseTodo("dodge");
+        }
+        if (event.key === "ArrowRight") {
+          player.style.setProperty("--player-x", sideToOffset.right);
+          if (expectedDodgeSide() === "right") chooseTodo("dodge");
+        }
+        if (event.key === "ArrowUp" || event.key === " ") chooseTodo("eat");
+      });
+
+      init();
+    </script>
+  </body>
+</html>
